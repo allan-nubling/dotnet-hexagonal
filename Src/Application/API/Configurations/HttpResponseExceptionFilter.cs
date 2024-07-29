@@ -3,14 +3,15 @@ using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Application.API.v1.Controllers;
+namespace Application.API.Configurations.Filters;
+/// <inheritdoc/>
 public class HttpResponseExceptionFilter : IActionFilter
 {
-
+/// <inheritdoc/>
     public void OnActionExecuting(ActionExecutingContext context)
     {
     }
-
+/// <inheritdoc/>
     public void OnActionExecuted(ActionExecutedContext context)
     {
         if (context.Exception is HttpException httpResponseException)

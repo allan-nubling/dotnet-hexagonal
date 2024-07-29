@@ -1,7 +1,6 @@
 
 using System.Reflection;
-using Application.API.v1.Controllers;
-using Domain;
+using Application.API.Configurations.Filters;
 
 using Microsoft.OpenApi.Models;
 
@@ -9,9 +8,9 @@ namespace Application.API
 {
     internal class Program
     {
-        private static async Task Main(string[] args)
+        private static async Task Main()
         {
-            var builder = WebApplication.CreateBuilder(args);
+            var builder = WebApplication.CreateBuilder();
 
 
 
