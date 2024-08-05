@@ -1,6 +1,7 @@
 
 using Domain.Enums;
 using Domain.Exceptions;
+using Domain.Exceptions.Bases;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 namespace Application.API.Configurations.Filters;
@@ -31,7 +32,7 @@ public class HttpResponseExceptionFilter : IActionFilter
         }
         if (context.Exception is not null)
         {
-            context.Result = new ObjectResult(new InternalException("Server", ExceptionCode.SE000).Value)
+            context.Result = new ObjectResult(new UnexpectedInternalException("Server", ExceptionCode.SE000).Value)
             {
                 StatusCode = StatusCodes.Status500InternalServerError
             };

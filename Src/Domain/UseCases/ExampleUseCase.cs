@@ -3,7 +3,6 @@ using System.Reflection;
 using System.Resources;
 using Domain.Enums;
 using Domain.Exceptions;
-
 namespace Domain.UseCases;
 public class ExampleUseCase
 {
@@ -16,8 +15,8 @@ public class ExampleUseCase
         await Task.CompletedTask;
         if (input.ShouldThrowAnError == true)
         {
-            // throw new ExampleException(nameof(ExampleUseCase), ExceptionCode.CE000);
-            throw new InternalException(nameof(ExampleUseCase), ExceptionCode.CE000);
+            throw new ExampleException(nameof(ExampleUseCase), ExceptionCode.CE000);
+            // throw new Exception("Unexpected test!");
         }
         var resourceManager = new ResourceManager("Domain.Resources.Localization.UseCasesMessages", Assembly.GetExecutingAssembly());
         return new ExampleUseCaseOutput() { Bar = resourceManager.GetString("ExampleUseCaseSuccess") ?? "" };

@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Net.Mime;
 using Application.API.Configurations.Attributes;
-using Domain.Exceptions;
+using Domain.Exceptions.Bases;
 using Domain.UseCases;
 using Microsoft.AspNetCore.Mvc;
 

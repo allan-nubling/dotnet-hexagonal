@@ -121,12 +121,8 @@
     <value>An example exception</value>
     <comment/>
   </data>
-  <data name="InternalException" xml:space="preserve">
+  <data name="UnexpectedInternalException" xml:space="preserve">
     <value>An unexpected error, please contact administrator for more info</value>
-    <comment/>
-  </data>
-  <data name="AdapterException" xml:space="preserve">
-    <value>We are having problems with an provider</value>
     <comment/>
   </data>
 </root>
