@@ -1,6 +1,6 @@
 namespace Application.API.v1.Controllers
 {
-    public class ExampleQueryRequest 
+    public class ExampleQueryRequest
 
     {
         /// <summary>

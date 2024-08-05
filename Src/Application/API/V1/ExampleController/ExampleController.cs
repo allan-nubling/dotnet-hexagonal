@@ -1,25 +1,27 @@
+using System.Globalization;
 using System.Net.Mime;
+using Application.API.Configurations.Attributes;
 using Domain.Exceptions;
+using Domain.UseCases;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Application.API.v1.Controllers
 {
     [ApiController]
     [ApiV1Route("[controller]")]
-    public class ExampleController : ControllerBase
-
+    public class ExampleController(ExampleUseCase _exampleUseCase) : ControllerBase
     {
         [HttpGet]
         [Consumes(MediaTypeNames.Application.Json)]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(SampleExceptionValue))]
-        public ActionResult<ExampleResponse> Get([FromQuery] ExampleQueryRequest query)
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BaseException))]
+        public async Task<ActionResult<ExampleResponse>> Get([FromQuery] ExampleQueryRequest query)
         {
+            CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
 
-            throw new Exception("A generic error message!");
-            throw new SampleException("A sample message", "E001");
-            ExampleResponse response = new();
+            var result = await _exampleUseCase.Execute(new ExampleUseCaseInput() { Foo = query.Name, ShouldThrowAnError = query.ThrowError });
+            ExampleResponse response = new() { TestString = result.Bar };
             return response;
         }
 

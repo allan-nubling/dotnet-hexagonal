@@ -1,9 +1,8 @@
 
 using System.Reflection;
 using Application.API.Configurations.Filters;
-
+using Domain.UseCases;
 using Microsoft.OpenApi.Models;
-
 namespace Application.API
 {
     internal class Program
@@ -12,31 +11,22 @@ namespace Application.API
         {
             var builder = WebApplication.CreateBuilder();
 
+            builder.Services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[] { "en-US", "pt-BR" };
+                options.SetDefaultCulture(supportedCultures[0])
+                    .AddSupportedCultures(supportedCultures)
+                    .AddSupportedUICultures(supportedCultures);
+            });
 
-
-
-            // builder.Services.AddKeyedSingleton<IService, ServiceA>(ServicesEnum.ServiceA);
-            // builder.Services.AddKeyedSingleton<IService, ServiceB>(ServicesEnum.ServiceB);
-
-            // builder.Services.AddScoped<IServiceMapper>(provider =>
-            // {
-
-            //     Dictionary<ServicesEnum, IService> services = new()
-            //     {
-            //         [ServicesEnum.ServiceA] = builder.Services.BuildServiceProvider().GetKeyedService<IService>(ServicesEnum.ServiceA),
-            //         [ServicesEnum.ServiceB] = builder.Services.BuildServiceProvider().GetKeyedService<IService>(ServicesEnum.ServiceB)
-            //     };
-            //     return new ServiceMapper(services);
-            // }); ;
-
+            builder.Services.AddLocalization();
 
             builder.Services.AddControllers(options =>
             {
                 options.Filters.Add<HttpResponseExceptionFilter>();
             });
 
-            // builder.Services.AddScoped<ICreateProcessUseCase, CreateProcessUseCase>();
-            // builder.Services.AddScoped<IGetProcessUseCase, GetProcessUseCase>();
+            builder.Services.AddScoped<ExampleUseCase>();
 
             builder.Services.AddSwaggerGen(options =>
             {
@@ -64,6 +54,8 @@ namespace Application.API
             });
 
             var app = builder.Build();
+
+            app.UseRequestLocalization();
 
             if (app.Environment.IsDevelopment())
             {

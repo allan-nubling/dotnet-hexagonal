@@ -1,12 +1,10 @@
+using Domain.Enums;
 
 namespace Domain.Exceptions
 {
-    public class DomainException : Exception
+    public class DomainException : BaseException
     {
-        public string Module { get; }
-        public string Error { get; }
-        public DomainException(string module, string error, string Message) : base(Message) =>
-            (Module, Error) = (module, error);
+        public DomainException(string module, string error, ExceptionCode code, string message) : base(module, error, code, message) { }
     }
 }
 

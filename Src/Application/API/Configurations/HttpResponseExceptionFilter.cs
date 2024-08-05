@@ -1,38 +1,42 @@
 
+using Domain.Enums;
 using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-
 namespace Application.API.Configurations.Filters;
 /// <inheritdoc/>
 public class HttpResponseExceptionFilter : IActionFilter
 {
-/// <inheritdoc/>
+    /// <inheritdoc/>
     public void OnActionExecuting(ActionExecutingContext context)
     {
     }
-/// <inheritdoc/>
+    /// <inheritdoc/>
     public void OnActionExecuted(ActionExecutedContext context)
     {
-        if (context.Exception is HttpException httpResponseException)
+        if (context.Exception is BaseException handledException)
         {
-            context.Result = new ObjectResult(httpResponseException.Value)
+            context.Result = new ObjectResult(handledException.Value)
             {
-                StatusCode = httpResponseException.StatusCode
+                StatusCode = handledException switch
+                {
+                    AdapterException => StatusCodes.Status502BadGateway,
+                    DomainException => StatusCodes.Status400BadRequest,
+                    ForbiddenException => StatusCodes.Status403Forbidden,
+                    _ => StatusCodes.Status500InternalServerError
+                }
             };
-
             context.ExceptionHandled = true;
+            return;
         }
-
-        if (context.Exception is Exception ex)
+        if (context.Exception is not null)
         {
-            context.Result = new ObjectResult(new ServerExceptionValue("Server", ex.Message))
+            context.Result = new ObjectResult(new InternalException("Server", ExceptionCode.SE000).Value)
             {
-                StatusCode = 500
+                StatusCode = StatusCodes.Status500InternalServerError
             };
 
             context.ExceptionHandled = true;
-
         }
     }
 }
